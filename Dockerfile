@@ -5,14 +5,13 @@ WORKDIR /app
 COPY package*.json ./
 COPY prisma ./prisma
 
-ENV DATABASE_URL="postgresql://postgres:mysecretpassword@localhost:5432/postgres"
+ENV DATABASE_URL="postgresql://postgres:mysecretpassword@localhost:5433/postgres?schema=public"
 
 RUN npm install
-
-RUN npx prisma migrate dev --name init && \
-    npx prisma generate
-
 COPY . .
+
+RUN npx prisma migrate dev
+RUN npx prisma generate
 
 EXPOSE 3000
 
